@@ -1,0 +1,111 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url("public/images/cinema-background.jpg");
+}
+h3{
+    color: white;
+}
+a{
+    text-decoration: none;
+}
+.topnav{
+    overflow: hidden;
+    background-color: #7e8baa7b;
+    padding: 10px;
+}
+.topnav a{
+    float: left;
+    display: block;
+    color: rgba(18, 17, 17, 0.984);;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+   font-size: 1.2rem;
+}
+.topnav .search-container{
+    float: right;
+}
+form{
+    background-color: #151f30;
+    width: 300px;
+    height: 43px;
+    border-radius: 7px;
+    display: flex;
+    align-items: center;
+}
+input{
+    all: unset;
+    font: 15px system-ui;
+    color: white;
+    height: 100%;
+    width: 100%;
+    padding: 6px 9px;
+}
+.thumbnail{
+    height: 350px;
+    width: 300px;
+    border-radius: 19px;
+}
+.column{
+    float: left;
+    width: 25%;
+    padding: 10px 10px;
+}
+.card{
+    border-radius: 19px;
+    padding: 10px ;
+    text-align: center;
+    background-color: #45546ea0;
+}
+img{
+    width: 70%;
+}
+
+/* Define the navigation bar styles */
+.navbar {
+    overflow: hidden;
+    background-color: #1317200b;
+    padding: 10px;
+
+}
+
+/* Style the navbar links */
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+.navbar a {
+    float: left;
+    display: block;
+    color: rgb(20, 19, 19);
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+   font-size: 1.2rem;
+}
+
+/* Style the "Sign Up" button */
+.navbar .signup-button {
+    float: right; /* Move the button to the right */
+    background-color: #007bff; /* Button color */
+    border-radius: 5px; /* Rounded corners */
+
+}
+
+/* Style the "Sign Up" button on hover */
+.signup-button:hover {
+    background-color: #0056b3; /* Hover color */
+    color: #fff;
+}
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}

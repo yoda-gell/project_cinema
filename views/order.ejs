@@ -1,0 +1,144 @@
+<%- include('partials/header') %>
+<div class="box">
+    <div class="col-12 col-lg-6 text-center">
+        <h1 class="mbr-section-title mbr-fonts-style mb-3 display-1 fs-1"><strong>Start Magic Movies</strong></h1>
+        <p id="cityInfo"></p>
+        <select class="form-select form-select-lg mb-3" id="citySelect" aria-label=".form-select-lg example">
+          <option selected>Choose a city</option>
+        </select>
+        
+      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option selected>cinema</option>
+          <option value="1">Cinema City</option>
+          <option value="2">Hot Cinema</option>
+          
+      </select>
+      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option selected>Date</option>
+          <option value="1">today</option>
+          <option value="2">tomorrow</option>
+
+      </select>
+      <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
+          <option selected>Hour</option>
+          <option value="1">16:00</option>
+          <option value="1">17:00</option>
+          <option value="1">18:00</option>
+          <option value="1">20:00</option>
+          <option value="2">22:00</option>
+          <option value="3">00:00</option>
+      </select>
+
+      
+      
+  
+      <a href="order" class="animated-button1">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Select movie
+      </a>
+    </div>
+  </div>
+  
+  <script>
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var latitude = position.coords.latitude;
+        var longitude = position.coords.longitude;
+        
+        reverseGeocode(latitude, longitude);
+        findNearbyCinemas(latitude, longitude);
+      });
+    } else {
+      alert("Geolocation is not supported in your browser.");
+    }
+    function reverseGeocode(latitude, longitude) {
+      var apiKey = keys.env.GOOGLE_API_KEY;
+  
+      var apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${apiKey}`;
+  
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'OK') {
+            var results = data.results;
+            if (results.length > 0) {
+              var addressComponents = results[0].address_components;
+              for (var i = 0; i < addressComponents.length; i++) {
+                var component = addressComponents[i];
+                if (component.types.includes('locality')) {
+                  var cityName = component.long_name;
+                  
+                  populateCitySelect(cityName);
+                  
+                  document.getElementById("cityInfo").textContent = `You are in ${cityName}`;
+                  return;
+                }
+              }
+            } else {
+              alert('Unable to determine your city.');
+            }
+          } else {
+            console.error('Error performing reverse geocoding:', data.status);
+          }
+        })
+        .catch(error => {
+          console.error('Error performing reverse geocoding:', error);
+        });
+    }
+  
+    function findNearbyCinemas(latitude, longitude) {
+      var apiKey = keys.env.GOOGLE_API_KEY;
+  
+        var apiUrl = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=1500&type=movie_theater&keyword=cruise&key=${apiKey}`
+  
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'OK') {
+            var cinemas = data.results;
+            if (cinemas.length > 0) {
+              populateCinemaSelect(cinemas);
+            } else {
+              alert('No cinemas found nearby.');
+            }
+          } else {
+            console.error('Error fetching nearby cinemas:', data.status);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching nearby cinemas:', error);
+        });
+    }
+  
+    function populateCitySelect(cityName) {
+      var citySelect = document.getElementById("citySelect");
+  
+      var option = document.createElement("option");
+      option.value = cityName;
+      option.textContent = cityName;
+  
+      citySelect.appendChild(option);
+    }
+  
+    function populateCinemaSelect(cinemas) {
+      var cinemaSelect = document.getElementById("cinemaSelect");
+  
+      cinemaSelect.innerHTML = '<option selected>Choose a cinema</option>';
+  
+      cinemas.forEach(function(cinema) {
+        var option = document.createElement("option");
+        option.value = cinema.name;
+        option.textContent = cinema.name;
+        cinemaSelect.appendChild(option);
+      });
+    }
+  </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+  crossorigin="anonymous"></script>
+
+  <%- include('partials/footer') %>
